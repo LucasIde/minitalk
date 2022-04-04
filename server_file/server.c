@@ -6,18 +6,18 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/01 20:32:26 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/04 19:27:11 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk.h"
 
-int in;
+int gl;
 
-int	ft_exp(void)
+int	ft_exp(int in)
 {
-	int len;
-	int nb;
+	int	len;
+	int	nb;
 
 	len = in;
 	nb = 1;
@@ -29,38 +29,48 @@ int	ft_exp(void)
 	return (nb);
 }
 
-void	handle_SIGUSR1(int sig)
+void	handle_sigusr1(int sig)
 {
 	static int	nb;
-	char c;
+	static int	in = 9;
+	char		c;
 
 	--in;
-	if (sig == SIGUSR1)
-		nb += 0;
-	if (sig == SIGUSR2)
-		nb +=ft_exp();
-	if (in == 0)
+	if (in > 6)//envoi deux signaux pour savoir dans quel cas je suis
 	{
-		c = nb;
-		write(1, &c, 1);
-		in = 7;
-		nb = 0;
+		if (sig == SIGUSR1)
+			gl += 0;
+		if (sig == SIGUSR2)
+			gl += 1;
 	}
-
+	if (in <= 6 && in > 0)
+	{
+		if (sig == SIGUSR1)
+			nb += 0;
+		if (sig == SIGUSR2)
+			nb += ft_exp(in);
+	}
+	if (gl == 1)
+	{
+		if (in == 0)
+		{
+			c = nb;
+			write(1, &c, 1);
+			in = 9;
+			nb = 0;
+			gl = 0;
+		}
+	}
 }
 
-int main(void)
+int	main(void)
 {
-	struct sigaction sa1;
-	struct sigaction sa2;
+	struct sigaction	sa1;
 
 	printf("%d\n", getpid());
-	in = 7;
-	sa1.sa_handler = &handle_SIGUSR1;
+	gl = 0;
+	sa1.sa_handler = &handle_sigusr1;
 	sa1.sa_flags = 0;
-	sa2.sa_handler = &handle_SIGUSR1;
-	sa2.sa_flags = 0;
-
 	sigaction(SIGUSR1, &sa1, NULL);
 	sigaction(SIGUSR2, &sa1, NULL);
 	while (1)
