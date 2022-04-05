@@ -6,25 +6,23 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/04 19:27:11 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/05 18:59:25 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minitalk.h"
 
-int gl;
+char	*str;
 
 int	ft_exp(int in)
 {
-	int	len;
 	int	nb;
 
-	len = in;
 	nb = 1;
-	while (len > 0)
+	while (in > 0)
 	{
 		nb *= 2;
-		len--;
+		in--;
 	}
 	return (nb);
 }
@@ -32,33 +30,45 @@ int	ft_exp(int in)
 void	handle_sigusr1(int sig)
 {
 	static int	nb;
-	static int	in = 9;
+	static int	in = 7;
+	static int	gl = 31;
+	static int	len;
+	static int	i;
 	char		c;
 
-	--in;
-	if (in > 6)//envoi deux signaux pour savoir dans quel cas je suis
+	if (gl > 0)
 	{
+		gl--;
 		if (sig == SIGUSR1)
-			gl += 0;
+			len += 0;
 		if (sig == SIGUSR2)
-			gl += 1;
+			len += ft_exp(gl);
 	}
-	if (in <= 6 && in > 0)
+	else if (gl == 0)
 	{
+		str = (char *)malloc(sizeof(char) * len);
+		gl--;
+	}
+	if (gl == -1)
+	{
+		--in;
 		if (sig == SIGUSR1)
 			nb += 0;
 		if (sig == SIGUSR2)
 			nb += ft_exp(in);
-	}
-	if (gl == 1)
-	{
 		if (in == 0)
 		{
 			c = nb;
-			write(1, &c, 1);
-			in = 9;
+			str[i] = c;
+			in = 7;
 			nb = 0;
-			gl = 0;
+			i++;
+			if (i == len)
+			{
+				write(1, str, len);
+				free(str);
+				gl = 31;
+			}
 		}
 	}
 }
@@ -68,7 +78,6 @@ int	main(void)
 	struct sigaction	sa1;
 
 	printf("%d\n", getpid());
-	gl = 0;
 	sa1.sa_handler = &handle_sigusr1;
 	sa1.sa_flags = 0;
 	sigaction(SIGUSR1, &sa1, NULL);

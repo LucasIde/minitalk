@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:10 by lide              #+#    #+#             */
-/*   Updated: 2022/04/04 19:19:03 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/05 18:19:29 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,37 +68,11 @@ long	ft_atoi(const char *str)
 	return (j);
 }
 
-void	choose_operation(int pid, int op)
-{
-	if (op == 0)
-	{
-		kill(pid, SIGUSR1);
-		usleep(50);
-		kill(pid, SIGUSR1);
-		usleep(50);
-	}
-	else if (op == 1)
-	{
-		kill(pid, SIGUSR1);
-		usleep(50);
-		kill(pid, SIGUSR2);
-		usleep(50);
-	}
-	else
-	{
-		kill(pid, SIGUSR2);
-		usleep(50);
-		kill(pid, SIGUSR2);
-		usleep(50);
-	}
-}
-
-void	d_to_b(char c, int pid, int op)
+void	d_to_b(char c, int pid)
 {
 	int	max;
 
 	max = 64;
-	choose_operation(pid, op);
 	while (max > 0)
 	{
 		if (c >= max)
@@ -113,21 +87,33 @@ void	d_to_b(char c, int pid, int op)
 	}
 }
 
-char	*len(char *arg)
+void	len(char *arg, int pid)
 {
 	int	i;
+	int	max;
 
 	i = 0;
+	max = 1073741824;
 	while (arg[i])
 		i++;
-	return (ft_itoa(i));
+	while (max > 0)
+	{
+		if (i >= max)
+		{
+			kill(pid, SIGUSR2);
+			i -= max;
+		}
+		else
+			kill(pid, SIGUSR1);
+		max /= 2;
+		usleep(50);
+	}
 }
 
 int	main(int argc, char **argv)
 {
 	int		pid_s;
 	int		i;
-	char	*len_arg;
 
 	if (argc != 3)
 		return (0);
@@ -137,18 +123,9 @@ int	main(int argc, char **argv)
 		write(1, "WRONG PID", 9);
 		return (0);
 	}
-	len_arg = len(argv[2]);
-	if (!len_arg)
-	{
-		write(2, "Error", 5);
-		return (0);
-	}
-	i = -1;
-	while (len_arg[++i])
-		d_to_b(len_arg[i], pid_s, 0);
-	free(len_arg);
+	len(argv[2], pid_s);
 	i = -1;
 	while (argv[2][++i])
-		d_to_b(argv[2][i], pid_s, 1);
+		d_to_b(argv[2][i], pid_s);
 	return (0);
 }
