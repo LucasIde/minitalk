@@ -6,13 +6,15 @@
 #    By: lide <lide@student.s19.be>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/01 14:18:05 by lide              #+#    #+#              #
-#    Updated: 2022/04/05 18:49:27 by lide             ###   ########.fr        #
+#    Updated: 2022/04/06 12:59:04 by lide             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS_SERVER		=	server_file/server.c
+SRCS_SERVER		=	server_file/server.c\
+					utils_file/utils.c
 
-SRCS_CLIENT		=	client_file/client.c
+SRCS_CLIENT		=	client_file/client.c\
+					utils_file/utils.c
 
 NAME1			= server.a
 NAME2			= client.a
