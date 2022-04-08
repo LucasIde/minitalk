@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 16:15:15 by lide              #+#    #+#             */
-/*   Updated: 2022/04/06 16:24:50 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/08 19:34:52 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
 
-
-# include <stdio.h>
-
-char			*ft_itoa2(long n2, int nb);
 char			*ft_itoa(int n);
 long			ft_atoi(const char *str);
+int				ft_printnbr(int n);
 unsigned int	ft_exp(int in);
 
 #endif

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/08 19:39:44 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/08 19:39:41 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_file/minitalk.h"
+#include "../includes_file/minitalk_bonus.h"
 
 void	first_signal(int sig, unsigned int *len, int *first_ct, char **str)
 {
@@ -40,8 +40,8 @@ void	first_signal(int sig, unsigned int *len, int *first_ct, char **str)
 
 void	second_signal(int sig, unsigned int *len, int *first_ct, char **str)
 {
-	char				letter;
-	static int			letter_ct = 7;
+	unsigned char		letter;
+	static int			letter_ct = 8;
 	static unsigned int	nb;
 	static unsigned int	i;
 
@@ -52,13 +52,13 @@ void	second_signal(int sig, unsigned int *len, int *first_ct, char **str)
 	{
 		letter = nb;
 		(*str)[i] = letter;
-		letter_ct = 7;
+		letter_ct = 8;
 		nb = 0;
 		if (++i == *len)
 		{
 			write(1, *str, *len);
 			free(*str);
-			*first_ct = 32;
+			*first_ct = 64;
 			*len = 0;
 			i = 0;
 		}
@@ -68,13 +68,25 @@ void	second_signal(int sig, unsigned int *len, int *first_ct, char **str)
 void	handle_signal(int sig)
 {
 	static char			*str;
-	static int			first_ct = 32;
+	static int			first_ct = 64;
+	static int			pid_c;
 	static unsigned int	len;
 
-	if (first_ct >= 0)
+	if (first_ct >= 33)
+	{
+		first_signal(sig, &len, &first_ct, &str);
+		if (first_ct == 32)
+		{
+			pid_c = len;
+			len = 0;
+		}
+	}
+	else if (first_ct >= 0 && first_ct <= 32)
 		first_signal(sig, &len, &first_ct, &str);
 	else if (first_ct == -1)
 		second_signal(sig, &len, &first_ct, &str);
+	if (first_ct == 64)
+		kill(pid_c, SIGUSR2);
 }
 
 int	main(void)
