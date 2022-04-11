@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/11 17:24:35 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 22:25:45 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,6 @@ int	main(void)
 	sigaction(SIGUSR1, &sa1, NULL);
 	sigaction(SIGUSR2, &sa1, NULL);
 	while (1)
-	{
 		sleep(1);
-	}
 	return (0);
 }

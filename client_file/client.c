@@ -6,13 +6,13 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:10 by lide              #+#    #+#             */
-/*   Updated: 2022/04/11 18:23:31 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 22:21:58 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_file/minitalk.h"
 
-void	d_to_b(unsigned char c, int pid)
+void	d_to_b(char c, int pid)
 {
 	int	max;
 
@@ -60,9 +60,9 @@ int	write_error(int error, int argc)
 		write(2, "Too few arguments", 17);
 	else if (error == 0 && argc > 3)
 		write(2, "Too many arguments", 18);
-	if (error == 1)
+	else if (error == 1)
 		write(2, "Pid can't have letter", 21);
-	if (error == 2)
+	else if (error == 2)
 		write(2, "Unknown character\n", 18);
 	return (0);
 }
@@ -87,5 +87,5 @@ int	main(int argc, char **argv)
 	i = -1;
 	while (argv[2][++i])
 		d_to_b(argv[2][i], pid_s);
-	return (0);
+	return (1);
 }

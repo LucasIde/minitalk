@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:10 by lide              #+#    #+#             */
-/*   Updated: 2022/04/11 17:50:26 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 22:25:21 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,6 @@ int	main(int argc, char **argv)
 	while (argv[2][++i])
 		d_to_b(argv[2][i], pid_s);
 	sleep(3);
-	write(2, "Message send to wrong Pid", 9);
+	write(2, "Message send to wrong Pid", 25);
 	return (1);
 }
