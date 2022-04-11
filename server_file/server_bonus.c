@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/08 19:39:41 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 17:24:35 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	first_signal(int sig, unsigned int *len, int *first_ct, char **str)
 		*str = (char *)malloc(sizeof(char) * (*len));
 		if (!*str)
 		{
-			write(2, "Malloc Error", 13);
+			write(2, "Malloc Error", 12);
 			exit(1);
 		}
 		(*first_ct)--;
@@ -97,7 +97,7 @@ int	main(void)
 	verif = ft_printnbr((int)getpid());
 	if (verif == -1)
 	{
-		write(1, "Error itoa", 17);
+		write(2, "Error itoa", 10);
 		return (0);
 	}
 	sa1.sa_handler = &handle_signal;

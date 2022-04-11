@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:10 by lide              #+#    #+#             */
-/*   Updated: 2022/04/08 18:40:00 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 18:23:31 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,34 @@ void	len(char *arg, int pid_s)
 	}
 }
 
+int	write_error(int error, int argc)
+{
+	if (error == 0 && argc < 3)
+		write(2, "Too few arguments", 17);
+	else if (error == 0 && argc > 3)
+		write(2, "Too many arguments", 18);
+	if (error == 1)
+		write(2, "Pid can't have letter", 21);
+	if (error == 2)
+		write(2, "Unknown character\n", 18);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	int					pid_s;
 	unsigned int		i;
 
 	if (argc != 3)
-		return (0);
+		return (write_error(0, argc));
 	pid_s = ft_atoi(argv[1]);
 	if (pid_s < 0)
-	{
-		write(2, "Wrong PID\n", 10);
-		return (0);
-	}
+		return (write_error(1, argc));
 	i = -1;
 	while (argv[2][++i])
 	{
 		if (argv[2][i] < 0 || argv[2][i] > 127)
-		{
-			write(2, "Unknow character\n", 17);
-			return (0);
-		}
+			return (write_error(2, argc));
 	}
 	len(argv[2], pid_s);
 	i = -1;

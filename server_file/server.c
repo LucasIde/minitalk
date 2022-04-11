@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:14 by lide              #+#    #+#             */
-/*   Updated: 2022/04/08 19:39:44 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 19:19:23 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,18 @@ void	first_signal(int sig, unsigned int *len, int *first_ct, char **str)
 {
 	int	tmp;
 
-	if (*first_ct > 32)
-		tmp = *first_ct - 32;
-	else
-		tmp = *first_ct;
 	if (*first_ct > 0)
 	{
 		(*first_ct)--;
 		if (sig == SIGUSR2)
-			*len += ft_exp(tmp - 1);
+			*len += ft_exp(*first_ct - 1);
 	}
 	if (*first_ct == 0)
 	{
 		*str = (char *)malloc(sizeof(char) * (*len));
 		if (!*str)
 		{
-			write(2, "Malloc Error", 13);
+			write(2, "Malloc Error", 12);
 			exit(1);
 		}
 		(*first_ct)--;
@@ -85,7 +81,7 @@ int	main(void)
 	verif = ft_printnbr((int)getpid());
 	if (verif == -1)
 	{
-		write(1, "Error itoa", 17);
+		write(1, "Error itoa", 10);
 		return (0);
 	}
 	sa1.sa_handler = &handle_signal;

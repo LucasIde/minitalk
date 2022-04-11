@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/06 12:55:38 by lide              #+#    #+#             */
-/*   Updated: 2022/04/08 19:36:28 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/11 17:57:01 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_printnbr(int n)
 	i = 0;
 	while (nb[i])
 		i++;
-	write(1, "The PID is : ", 13);
+	write(1, "The Pid is : ", 13);
 	write(1, nb, i);
 	write(1, "\n", 1);
 	free(nb);
