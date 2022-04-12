@@ -6,7 +6,7 @@
 /*   By: lide <lide@student.s19.be>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/01 14:14:10 by lide              #+#    #+#             */
-/*   Updated: 2022/04/11 22:25:21 by lide             ###   ########.fr       */
+/*   Updated: 2022/04/12 19:18:11 by lide             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	write_error(int error, int argc)
 	else if (error == 0 && argc > 3)
 		write(2, "Too many arguments", 18);
 	if (error == 1)
+		write(2, "You send nothing", 16);
+	if (error == 2)
 		write(2, "Pid can't have letter", 21);
 	return (0);
 }
@@ -87,12 +89,14 @@ int	main(int argc, char **argv)
 
 	if (argc != 3)
 		return (write_error(0, argc));
+	if (!argv[2][0])
+		return (write_error(1, argc));
 	sa3.sa_handler = &receive;
 	sa3.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR2, &sa3, NULL);
 	pid_s = ft_atoi(argv[1]);
 	if (pid_s < 0)
-		return (write_error(1, argc));
+		return (write_error(2, argc));
 	len(argv[2], pid_s, getpid(), 0);
 	len(argv[2], pid_s, getpid(), 1);
 	i = -1;
